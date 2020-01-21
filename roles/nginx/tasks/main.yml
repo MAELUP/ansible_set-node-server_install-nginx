@@ -1,0 +1,5 @@
+---
+- import_tasks: ./install_dependence-package.yml
+- import_tasks: ./config_repo-nginx.yml
+- import_tasks: ./install_nginx.yml
+...

@@ -1,0 +1,38 @@
+---
+- name: close dhcp
+  lineinfile: 
+   path: /etc/sysconfig/network-scripts/ifcfg-ens192
+   regexp: '^BOOTPROTO=dhcp' 
+   line: BOOTPROTO=none
+  
+- name: add static_ip, gateway, DNS
+  lineinfile: 
+   path: /etc/sysconfig/network-scripts/ifcfg-ens192
+   line: "{{ item.line }}"
+  loop:
+   - { line: "IPADDR=10.4.170.235" }
+   - { line: "PREFIX=24" }
+   - { line: "GATEWAY=10.4.170.1" }
+   - { line: "DNS1=10.4.150.212" } 
+
+- name: edit file resolv.conf(1) [clear config] 
+  lineinfile: 
+   path: /etc/resolv.conf
+   regexp: "{{ item.regexp }}"
+   state: absent
+  loop: 
+   - { regexp: ^search }
+   - { regexp: ^nameserver }
+
+- name: edit file resolv.conf(2) [add nameserver]
+  lineinfile:
+   path: /etc/resolv.conf
+   line: nameserver 10.4.150.212
+
+- name: restart network 
+  service:
+   name: network
+   state: restarted
+  ignore_errors: yes
+  
+...

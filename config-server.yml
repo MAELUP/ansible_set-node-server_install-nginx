@@ -1,0 +1,7 @@
+---
+- name: setup unconfig server
+  hosts: unconfig-server
+  gather_facts: no
+  roles: 
+   - set-nodeserver 
+...   

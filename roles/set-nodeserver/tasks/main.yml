@@ -1,0 +1,5 @@
+---
+- import_tasks: config_user.yml
+- import_tasks: config_ssh-key.yml
+- import_tasks: config_network.yml
+...

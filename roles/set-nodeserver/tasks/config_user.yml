@@ -1,0 +1,8 @@
+---
+- name: create user 
+  user:
+   name: rapepat
+   password: rapepat 
+   groups: wheel
+   append: yes
+...

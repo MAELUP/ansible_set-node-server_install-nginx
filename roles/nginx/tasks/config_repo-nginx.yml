@@ -1,0 +1,16 @@
+---
+- name: add repo nginx-plus(1) [create file]
+  file: 
+   path: /etc/yum.repos.d/nginx-plus.repo
+   state: touch
+
+- name: add repo nginx-plus{2} [edit file]
+  lineinfile:
+   path: /etc/yum.repos.d/nginx-plus.repo
+   line: "{{item.line}}"
+  loop: 
+   - { line: "[nginx-plus]" }
+   - { line: "name=nginx-plus repo" }
+   - { line: "baseurl=http://10.4.150.213/nginx-rpms" }
+   - { line: "gpgcheck=0" }
+...

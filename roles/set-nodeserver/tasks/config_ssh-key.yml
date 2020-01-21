@@ -1,0 +1,7 @@
+---
+- name: deploy SSH Key
+  authorized_key:
+   user: rapepat
+   key: "{{ lookup('file','/home/rapepat/.ssh/id_rsa.pub') }}"
+   state: present
+...

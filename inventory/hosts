@@ -1,0 +1,5 @@
+[unconfig-server]
+10.4.170.194 ansible_user=root ansible_password=P@ssw0rd
+
+[nginx-server]
+10.4.170.235 ansible_user=rapepat ansible_password=rapepat ansible_become_pass=P@ssw0rd
