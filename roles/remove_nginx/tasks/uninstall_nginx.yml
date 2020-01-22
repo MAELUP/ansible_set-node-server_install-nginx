@@ -13,25 +13,27 @@
 - name: find nginx directory
   find:
    paths: /
-   patterns: "nginx", "nginx-plus"
+   patterns: "nginx*"
    file_type: directory
    recurse: yes 
-  register: remove_nginx_all
+  register: remove_nginx_dir
 
 - name: remove nginx directory
   file:
    path: "{{ item.path }}"
    state: absent
-  with_items: "{{ remove_nginx_all.files }}"
+  with_items: "{{ remove_nginx_dir.files }}"
 
 - name: find nginx file 
   find: 
    paths: /
-   patterns: "nginx", "nginx-plus"
+   patterns: "nginx*"
    file_type: file
   register: remove_nginx_file
   
 - name: remove nginx file
   file: 
-   path
+   path: "{{ item.path }}"
+   state: absent
+  with_items: "{{ remove_nginx_file.files }}"
 ...
