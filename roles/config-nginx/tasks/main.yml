@@ -1,0 +1,12 @@
+---
+#- import_tasks: ./create_web.yml
+- import_tasks: ./config_nginx.yml
+...
+
+
+
+
+
+
+
+

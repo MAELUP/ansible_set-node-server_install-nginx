@@ -1,0 +1,55 @@
+---
+- name: create file config nginx 
+  file: 
+   path: /etc/nginx/conf.d/web-server.conf 
+   state: touch
+   mode: 0755
+
+- name: add config to file 
+  lineinfile:    
+   path: /etc/nginx/conf.d/web-server.conf 
+   line: "\n upstream pull-loadbalance-server {
+          \n     random two least_time=last_byte;
+          \n     server 10.4.170.235:8001;
+          \n     server 10.4.170.235:8002;
+          \n     server 10.4.170.235:8003;
+          \n     server 10.4.170.235:8004;
+          \n }
+          \n server { 
+          \n     listen 80;
+          \n     server_name 10.4.170.235;
+          \n     location / {
+          \n     proxy_pass http://pull-loadbalance-server;
+          \n       }
+          \n }
+          \n server {
+          \n     listen 8001;
+          \n     server_name 10.4.170.235;
+          \n     root /var/www/web;
+          \n     index web.html;
+          \n }
+          \n server {
+          \n     listen 8002;
+          \n     server_name 10.4.170.235;
+          \n     root /var/www/web2;
+          \n     index web2.html;
+          \n }
+          \n server {
+          \n     listen 8003;
+          \n     server_name 10.4.170.235;
+          \n     root /var/www/web3;
+          \n     index web3.html;
+          \n }
+          \n server {
+          \n     listen 8004;
+          \n     server_name 10.4.170.235;
+          \n     root /var/www/web4;
+          \n     index web4.html;
+          \n }"
+
+ 
+- name: restart nginx 
+  service: 
+   name: nginx
+   state: restarted
+...

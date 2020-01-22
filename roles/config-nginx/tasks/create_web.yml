@@ -1,0 +1,35 @@
+---
+- name:  create directory www
+  file:
+   path: "{{ item.dir }}"
+   state: directory
+   mode: 0755
+  loop:
+   - { dir: "/var/www" }
+   - { dir: "/var/www/web"}
+   - { dir: "/var/www/web2"}
+   - { dir: "/var/www/web3"}
+   - { dir: "/var/www/web4"}
+
+- name: create file web 
+  file:
+   path: "{{ item.file }}"
+   state: touch
+   mode: 0755
+  loop: 
+   - { file: "/var/www/web/web.html"}
+   - { file: "/var/www/web/web2.html"}
+   - { file: "/var/www/web/web3.html"}
+   - { file: "/var/www/web/web4.html"}
+
+- name: add content to web 
+  lineinfile: 
+   path: "{{ item.path }}" 
+   line: "{{ item.line }}"
+  loop: 
+   - { path: "/var/www/web/web.html" , line: "<html><body>web</body></html>"}
+   - { path: "/var/www/web/web2.html" , line: "<html><body>web2</body></html>"}
+   - { path: "/var/www/web/web3.html" , line: "<html><body>web3</body></html>"}
+   - { path: "/var/www/web/web4.html" , line: "<html><body>web4</body></html>"}
+
+...

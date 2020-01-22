@@ -1,0 +1,56 @@
+---
+- name: create file config nginx 
+  file: 
+   path: /etc/nginx/conf.d/web-server.conf 
+   state: touch
+   mode: 0755
+
+- name: add config to file 
+  lineinfile:    
+   path: /etc/nginx/conf.d/web-server.conf 
+   line: "{{ item.line }}" 
+  loop:
+   - { line: "upstream pull-loadbalance-server {"}
+   - { line: "    random two least_time=last_byte;"}
+   - { line: "    server 10.4.170.235:8001;"}
+   - { line: "    server 10.4.170.235:8002;"}
+   - { line: "    server 10.4.170.235:8003;"}
+   - { line: "    server 10.4.170.235:8004;"}
+   - { line: "}"}
+   - { line: "server {"}
+   - { line: "    listen 80;"}
+   - { line: "    server_name 10.4.170.235;"}
+   - { line: "    location / {"}
+   - { line: "        proxy_pass http://pull-loadbalance-server;" } 
+   - { line: "    }"}
+   - { line: "}"}
+   - { line: "server {"}
+   - { line: "    listen 8001;"}
+   - { line: "    server_name 10.4.170.235;"}
+   - { line: "    root /var/www/web;"}
+   - { line: "    index web.html;"}
+   - { line: "}"}
+   - { line: "server {"}
+   - { line: "    listen 8002;"}
+   - { line: "    server_name 10.4.170.235;"} 
+   - { line: "    root /var/www/web2;"}
+   - { line: "    index web2.html;"}
+   - { line: "}"}
+   - { line: "server {"}
+   - { line: "    listen 8003;"}
+   - { line: "    server_name 10.4.170.235;"} 
+   - { line: "    root /var/www/web3;"}
+   - { line: "    index web3.html;"}
+   - { line: "}"}
+   - { line: "server {"}
+   - { line: "    listen 8004;"}
+   - { line: "    server_name 10.4.170.235;"} 
+   - { line: "    root /var/www/web4;"}
+   - { line: "    index web4.html;"}
+   - { line: "}"}
+
+- name: restart nginx 
+  service: 
+   name: nginx
+   state: restarted
+...
