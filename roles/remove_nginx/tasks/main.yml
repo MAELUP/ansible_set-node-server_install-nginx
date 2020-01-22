@@ -1,0 +1,3 @@
+---
+- import_tasks: uninstall_nginx.yml
+... 

@@ -1,0 +1,37 @@
+---
+- name: stop nginx 
+  service:
+   name: nginx 
+   state: stopped
+
+- name: uninstall nginx 
+  yum: 
+   name: nginx 
+   state: absent
+   autoremove: yes
+
+- name: find nginx directory
+  find:
+   paths: /
+   patterns: "nginx", "nginx-plus"
+   file_type: directory
+   recurse: yes 
+  register: remove_nginx_all
+
+- name: remove nginx directory
+  file:
+   path: "{{ item.path }}"
+   state: absent
+  with_items: "{{ remove_nginx_all.files }}"
+
+- name: find nginx file 
+  find: 
+   paths: /
+   patterns: "nginx", "nginx-plus"
+   file_type: file
+  register: remove_nginx_file
+  
+- name: remove nginx file
+  file: 
+   path
+...
