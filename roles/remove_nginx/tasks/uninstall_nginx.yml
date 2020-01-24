@@ -36,4 +36,9 @@
    path: "{{ item.path }}"
    state: absent
   with_items: "{{ remove_nginx_file.files }}"
+  
+- name: remove repo nginx-plus file
+  file: 
+   path: /etc/yum.repos.d/nginx-plus.repo
+   state: absent
 ...
